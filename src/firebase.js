@@ -4,6 +4,9 @@ import {
   getAuth, 
   createUserWithEmailAndPassword ,
   signInWithEmailAndPassword ,
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -18,7 +21,7 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-
+const googleAuthProvider =new GoogleAuthProvider();
 const registerWithEmailAndPassword =async(email,password)=>{
   try {
     const response =await createUserWithEmailAndPassword(auth,email,password);
@@ -37,8 +40,27 @@ const loginWithEmailAndPassword = async(email,password)=>{
       throw(error);
   }
 }
+const sendPasswordReset=async(email)=>{
+  try {
+    await sendPasswordResetEmail(auth,email);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const signInByGoogle =async()=>{
+  try {
+    const response =  await signInWithPopup(auth,googleAuthProvider)
+    const user = response.user;
+    return user;
+  } catch (error) {
+    throw(error);
+  }
+}
 export {
   auth,
   registerWithEmailAndPassword,
   loginWithEmailAndPassword,
+  sendPasswordReset,
+  signInByGoogle,
 }

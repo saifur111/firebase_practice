@@ -5,7 +5,7 @@ import { signOut } from "firebase/auth";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const handleLogout =()=>{
     signOut(auth).then(()=>{
         navigate("/login");
